@@ -54,9 +54,10 @@ public class ProductController {
 		}
 
 		ProductModel productModel = new ProductModel();
-
 		// converter o DTO to Model
 		BeanUtils.copyProperties(productDto, productModel);
+		
+		
 		productModel.setCreateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
 		productModel = productService.save(productModel);
@@ -77,9 +78,13 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.findAllWithPage(pageable));
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/mic/{id}")
 	public ResponseEntity<Object> getOneProduct(@PathVariable(value = "id") Long id) {
 		Optional<ProductModel> productModelOptional = productService.findById(id);
+		
+		ProductModel produto = productService.achaById(id);
+		
+		System.out.println(produto);
 		
 		if (!productModelOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found !!!");
@@ -87,6 +92,20 @@ public class ProductController {
 			return ResponseEntity.status(HttpStatus.OK).body(productModelOptional.get());
 		}
 	}
+	
+	
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<ProductModel> getProduct(@PathVariable(value = "id") Long id) {
+		
+		ProductModel produto = productService.achaById(id);
+	
+		return ResponseEntity.status(HttpStatus.OK).body(produto);
+
+	}
+	
+	
+	
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Object> deleteProduct(@PathVariable(value = "id") Long id) {
@@ -111,8 +130,8 @@ public class ProductController {
 		if (!productModelOptional.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found !!!");
 		} else {
-			
-			put_model1(id, productDto);
+			System.out.println(productDto);
+			put_model2(id, productDto);
 			//put_model2(id, productDto);
 			
 			return ResponseEntity.status(HttpStatus.OK).body(productModel);
@@ -146,6 +165,7 @@ public class ProductController {
 		BeanUtils.copyProperties(productDto, productModel);
 		productModel.setId(productModel.getId());
 		productModel.setCreateDate(productModel.getCreateDate());
+		productModel.setUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
 		productModel = productService.save(productModel);
 		

@@ -2,12 +2,15 @@ package com.lhMeta.warehouse.models;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,12 +32,29 @@ public class ProductModel implements Serializable{
 	@Column(nullable = false)
 	private Double price;
 	
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private CategoryModel category;
+	
+	
 	@Column(nullable = true)
 	private LocalDateTime createDate;
 	
 	@Column(nullable = true)
 	private LocalDateTime updateDate;
 	
+	public ProductModel() {
+	}
+	
+	public ProductModel(Long id, String code, String description, Double price, LocalDateTime createDate, CategoryModel category) {
+		super();
+		this.id = id;
+		this.code = code;
+		this.description = description;
+		this.price = price;
+		this.createDate = createDate;
+		this.category = category;
+	}
 
 	public Long getId() {
 		return id;
@@ -69,7 +89,6 @@ public class ProductModel implements Serializable{
 	}
 	
 	
-
 	public LocalDateTime getCreateDate() {
 		return createDate;
 	}
@@ -87,14 +106,37 @@ public class ProductModel implements Serializable{
 	public void setUpdateDate(LocalDateTime updateDate) {
 		this.updateDate = updateDate;
 	}
+	
+	public CategoryModel getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryModel category) {
+		this.category = category;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ProductModel other = (ProductModel) obj;
+		return Objects.equals(id, other.id);
+	}
 
 	@Override
 	public String toString() {
 		return "ProductModel [id=" + id + ", code=" + code + ", description=" + description + ", price=" + price
-				+ ", insertDate=" + createDate + ", updateDate=" + updateDate + "]";
+				+ ", createDate=" + createDate + ", updateDate=" + updateDate + "]";
 	}
-
-	
 	
 	
 

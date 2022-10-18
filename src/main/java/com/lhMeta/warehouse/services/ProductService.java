@@ -3,6 +3,7 @@ package com.lhMeta.warehouse.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
@@ -21,6 +22,16 @@ public class ProductService {
 	public ProductService(ProductRepository productRepository) {
 		this.productRepository = productRepository;
 	}
+	
+	public Optional<ProductModel> findById(Long id) {	
+		return productRepository.findById(id);
+	}  
+	
+	public ProductModel achaById(Long id) {		
+		return productRepository.findById(id).orElseThrow(
+				() -> new EntityNotFoundException("Product not found " + id));			
+	}
+	
 
 	@Transactional
 	public ProductModel save(ProductModel productModel) {	
@@ -41,9 +52,7 @@ public class ProductService {
 		return productRepository.findAll(pageable);
 	}
 
-	public Optional<ProductModel> findById(Long id) {	
-		return productRepository.findById(id);
-	}
+	
 
 	@Transactional
 	public void deleteProduct(ProductModel productModel) {

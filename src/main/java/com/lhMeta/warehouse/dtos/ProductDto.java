@@ -2,6 +2,8 @@ package com.lhMeta.warehouse.dtos;
 
 import javax.validation.constraints.NotBlank;
 
+import com.lhMeta.warehouse.models.CategoryModel;
+
 public class ProductDto {
 
 	@NotBlank(message = "Name is mandatory")
@@ -11,6 +13,8 @@ public class ProductDto {
 	private String description;
 	
 	private Double price;
+	
+	private CategoryModel category;
 
 	public String getCode() {
 		return code;
@@ -23,11 +27,22 @@ public class ProductDto {
 	public Double getPrice() {
 		return price;
 	}
+	
+	public CategoryModel getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryModel category) {
+		this.category = category;
+	}
 
 	@Override
 	public String toString() {
-		return "ProductDto [code=" + code + ", description=" + description + ", price=" + price + "]";
+		return "ProductDto [code=" + code + ", description=" + description + ", price=" + price + ", category="
+				+ category.getDescription() + "]";
 	}
+
+	
 
 
 	
